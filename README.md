@@ -52,6 +52,7 @@ object({
     in_guest_user_patch_mode = optional(string)
     visibility               = optional(string, "Custom")
     properties               = optional(map(string), {})
+    tags                     = optional(map(string))
     window = optional(object({
       start_date_time      = string
       expiration_date_time = optional(string)
