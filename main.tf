@@ -19,8 +19,8 @@ resource "azurerm_maintenance_configuration" "mcf" {
   visibility = var.config.visibility
   properties = var.config.properties
 
-  tags = try(coalesce(
-    var.config.tags, var.tags), null
+  tags = coalesce(
+    var.config.tags, var.tags
   )
 
   dynamic "window" {
