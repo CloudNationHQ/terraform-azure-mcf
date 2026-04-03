@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.1.0...v1.2.0) (2026-04-03)
+
+
+### Features
+
+* add missing outputs ([#18](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/18)) ([73adc09](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/73adc0938a478973ef4e47bfced87ffa31b9dea0))
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#17](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/17)) ([2419e5b](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/2419e5b0408a1f36cf4643783928f7c819e39923))
+* **deps:** bump github.com/ulikunitz/xz from 0.5.10 to 0.5.14 in /tests ([#10](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/10)) ([2283b87](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/2283b87fded5dfdd564c1e71005813a744a5a7a4))
+* **deps:** bump golang.org/x/crypto from 0.36.0 to 0.45.0 in /tests ([#16](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/16)) ([86b6fdc](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/86b6fdca4473fd4fccf9324c951fa68391499aa1))
+
 ## [1.1.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.0.0...v1.1.0) (2025-05-09)
 
 
