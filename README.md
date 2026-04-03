@@ -128,6 +128,14 @@ The following outputs are exported:
 ### <a name="output_config"></a> [config](#output\_config)
 
 Description: Contains all maintenance configuration
+
+### <a name="output_dynamic_scope_assignments"></a> [dynamic\_scope\_assignments](#output\_dynamic\_scope\_assignments)
+
+Description: Contains all dynamic scope assignments
+
+### <a name="output_vm_assignments"></a> [vm\_assignments](#output\_vm\_assignments)
+
+Description: Contains all virtual machine assignments
 <!-- END_TF_DOCS -->
 
 ## Goals
