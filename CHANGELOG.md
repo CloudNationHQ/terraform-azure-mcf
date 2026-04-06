@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.2.0...v1.3.0) (2026-04-06)
+
+
+### Features
+
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#20](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/20)) ([8a2d1c2](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/8a2d1c2a0acb4a43c8d4e4c4974b2d697cb3790f))
+
 ## [1.2.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.1.0...v1.2.0) (2026-04-03)
 
 
