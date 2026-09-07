@@ -7,7 +7,7 @@ module "naming" {
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   groups = {
     demo = {
@@ -19,9 +19,9 @@ module "rg" {
 
 module "maintenance" {
   source  = "cloudnationhq/mcf/azure"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
-  config = {
+  maintenance = {
     name                      = module.naming.maintenance_configuration.name
     scope                     = "InGuestPatch"
     in_guest_user_patch_mode  = "User"
@@ -38,6 +38,7 @@ module "maintenance" {
     }
 
     install_patches = {
+      reboot = "Always"
       linux = {
         classifications_to_include    = ["Critical", "Security"]
         package_names_mask_to_exclude = ["dontpatch*"]

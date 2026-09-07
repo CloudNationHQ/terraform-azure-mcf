@@ -1,30 +1,26 @@
-# maintenance config
-resource "azurerm_maintenance_configuration" "mcf" {
+resource "azurerm_maintenance_configuration" "this" {
 
   resource_group_name = coalesce(
-    lookup(
-      var.config, "resource_group_name", null
-    ), var.resource_group_name
+    var.maintenance.resource_group_name, var.resource_group_name
   )
 
   location = coalesce(
-    lookup(var.config, "location", null
-    ), var.location
+    var.maintenance.location, var.location
   )
 
-  name                     = var.config.name
-  scope                    = var.config.scope
-  in_guest_user_patch_mode = var.config.in_guest_user_patch_mode
+  name                     = var.maintenance.name
+  scope                    = var.maintenance.scope
+  in_guest_user_patch_mode = var.maintenance.in_guest_user_patch_mode
 
-  visibility = var.config.visibility
-  properties = var.config.properties
+  visibility = var.maintenance.visibility
+  properties = var.maintenance.properties
 
   tags = coalesce(
-    var.config.tags, var.tags
+    var.maintenance.tags, var.tags
   )
 
   dynamic "window" {
-    for_each = var.config.window != null ? [var.config.window] : []
+    for_each = var.maintenance.window != null ? { "this" = var.maintenance.window } : {}
 
     content {
       start_date_time      = window.value.start_date_time
@@ -36,12 +32,12 @@ resource "azurerm_maintenance_configuration" "mcf" {
   }
 
   dynamic "install_patches" {
-    for_each = var.config.install_patches != null ? [var.config.install_patches] : []
+    for_each = var.maintenance.install_patches != null ? { "this" = var.maintenance.install_patches } : {}
 
     content {
-      reboot = var.config.install_patches.reboot
+      reboot = var.maintenance.install_patches.reboot
       dynamic "linux" {
-        for_each = try(install_patches.value.linux, null) != null ? [install_patches.value.linux] : []
+        for_each = try(install_patches.value.linux, null) != null ? { "this" = install_patches.value.linux } : {}
 
         content {
           classifications_to_include    = linux.value.classifications_to_include
@@ -51,7 +47,7 @@ resource "azurerm_maintenance_configuration" "mcf" {
       }
 
       dynamic "windows" {
-        for_each = try(install_patches.value.windows, null) != null ? [install_patches.value.windows] : []
+        for_each = try(install_patches.value.windows, null) != null ? { "this" = install_patches.value.windows } : {}
 
         content {
           classifications_to_include = windows.value.classifications_to_include
@@ -63,25 +59,22 @@ resource "azurerm_maintenance_configuration" "mcf" {
   }
 }
 
-# vm assignments
-resource "azurerm_maintenance_assignment_virtual_machine" "mcf_vm" {
-  for_each = var.config.vm_assignments
+resource "azurerm_maintenance_assignment_virtual_machine" "this" {
+  for_each = var.maintenance.vm_assignments
 
   location = coalesce(
-    lookup(var.config, "location", null
-    ), var.location
+    var.maintenance.location, var.location
   )
 
-  maintenance_configuration_id = azurerm_maintenance_configuration.mcf.id
+  maintenance_configuration_id = azurerm_maintenance_configuration.this.id
   virtual_machine_id           = each.value.virtual_machine_id
 }
 
-# dynamic scope assignments
-resource "azurerm_maintenance_assignment_dynamic_scope" "mcf_ds" {
-  for_each = var.config.dynamic_scope_assignments
+resource "azurerm_maintenance_assignment_dynamic_scope" "this" {
+  for_each = var.maintenance.dynamic_scope_assignments
 
   name                         = each.value.name
-  maintenance_configuration_id = azurerm_maintenance_configuration.mcf.id
+  maintenance_configuration_id = azurerm_maintenance_configuration.this.id
 
   filter {
     locations       = each.value.filter.locations
