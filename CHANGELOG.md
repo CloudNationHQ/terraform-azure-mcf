@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.2.0...v2.0.0) (2026-09-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade to azurerm v5 and module standards ([#25](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/25))
+
+### Features
+
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#20](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/20)) ([8a2d1c2](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/8a2d1c2a0acb4a43c8d4e4c4974b2d697cb3790f))
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#22](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/22)) ([6548573](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/6548573e615bbe2d810946a15e0f514bf3b36342))
+* **deps:** bump golang.org/x/crypto from 0.45.0 to 0.52.0 in /tests ([#23](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/23)) ([89a7681](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/89a7681bb129ea63adeefb5a4ffbf41caed609d4))
+* Upgrade to azurerm v5 and module standards ([#25](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/25)) ([18cb473](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/18cb473df917ceea15b04a87fc2bc609a10a3175))
+
 ## [1.2.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.1.0...v1.2.0) (2026-04-03)
 
 
