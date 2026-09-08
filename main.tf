@@ -1,5 +1,4 @@
 resource "azurerm_maintenance_configuration" "this" {
-
   resource_group_name = coalesce(
     var.maintenance.resource_group_name, var.resource_group_name
   )
@@ -35,9 +34,10 @@ resource "azurerm_maintenance_configuration" "this" {
     for_each = var.maintenance.install_patches != null ? { "this" = var.maintenance.install_patches } : {}
 
     content {
-      reboot = var.maintenance.install_patches.reboot
+      reboot = install_patches.value.reboot
+
       dynamic "linux" {
-        for_each = try(install_patches.value.linux, null) != null ? { "this" = install_patches.value.linux } : {}
+        for_each = install_patches.value.linux != null ? { "this" = install_patches.value.linux } : {}
 
         content {
           classifications_to_include    = linux.value.classifications_to_include
@@ -47,7 +47,7 @@ resource "azurerm_maintenance_configuration" "this" {
       }
 
       dynamic "windows" {
-        for_each = try(install_patches.value.windows, null) != null ? { "this" = install_patches.value.windows } : {}
+        for_each = install_patches.value.windows != null ? { "this" = install_patches.value.windows } : {}
 
         content {
           classifications_to_include = windows.value.classifications_to_include
