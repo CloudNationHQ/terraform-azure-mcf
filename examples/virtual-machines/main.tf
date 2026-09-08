@@ -7,7 +7,7 @@ module "naming" {
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   groups = {
     demo = {
@@ -19,15 +19,13 @@ module "rg" {
 
 module "network" {
   source  = "cloudnationhq/vnet/azure"
-  version = "~> 8.0"
-
-  naming = local.naming
+  version = "~> 10.0"
 
   vnet = {
-    name           = module.naming.virtual_network.name
-    location       = module.rg.groups.demo.location
-    resource_group = module.rg.groups.demo.name
-    address_space  = ["10.18.0.0/16"]
+    name                = module.naming.virtual_network.name
+    location            = module.rg.groups.demo.location
+    resource_group_name = module.rg.groups.demo.name
+    address_space       = ["10.18.0.0/16"]
 
     subnets = {
       int = {
@@ -40,37 +38,47 @@ module "network" {
 
 module "kv" {
   source  = "cloudnationhq/kv/azure"
-  version = "~> 4.0"
-
-  naming = local.naming
+  version = "~> 6.0"
 
   vault = {
     name                = module.naming.key_vault.name_unique
     location            = module.rg.groups.demo.location
     resource_group_name = module.rg.groups.demo.name
+    secrets = {
+      tls_keys = {
+        vm1 = {
+          algorithm = "RSA"
+          rsa_bits  = 2048
+        }
+        vm2 = {
+          algorithm = "RSA"
+          rsa_bits  = 2048
+        }
+      }
+    }
   }
 }
 
 module "vm1" {
   source  = "cloudnationhq/vm/azure"
-  version = "~> 6.0"
+  version = "~> 8.0"
 
-  keyvault   = module.kv.vault.id
-  naming     = local.naming
-  depends_on = [module.kv]
-
-  instance = {
+  virtual_machine = {
     type                = "linux"
+    size                = "Standard_D2s_v3"
+    username            = "adminuser"
     name                = "${module.naming.linux_virtual_machine.name}1"
     resource_group_name = module.rg.groups.demo.name
     location            = module.rg.groups.demo.location
     patch_mode          = "AutomaticByPlatform"
+    public_key          = module.kv.tls_public_keys.vm1.value
 
     bypass_platform_safety_checks_on_user_schedule_enabled = true
 
-    generate_ssh_key = {
-      enable = true
+    os_disk = {
+      storage_account_type = "Standard_LRS"
     }
+
     source_image_reference = {
       offer     = "UbuntuServer"
       publisher = "Canonical"
@@ -92,24 +100,24 @@ module "vm1" {
 
 module "vm2" {
   source  = "cloudnationhq/vm/azure"
-  version = "~> 6.0"
+  version = "~> 8.0"
 
-  keyvault   = module.kv.vault.id
-  naming     = local.naming
-  depends_on = [module.kv]
-
-  instance = {
+  virtual_machine = {
     type                = "linux"
+    size                = "Standard_D2s_v3"
+    username            = "adminuser"
     name                = "${module.naming.linux_virtual_machine.name}2"
     resource_group_name = module.rg.groups.demo.name
     location            = module.rg.groups.demo.location
     patch_mode          = "AutomaticByPlatform"
+    public_key          = module.kv.tls_public_keys.vm2.value
 
     bypass_platform_safety_checks_on_user_schedule_enabled = true
 
-    generate_ssh_key = {
-      enable = true
+    os_disk = {
+      storage_account_type = "Standard_LRS"
     }
+
     source_image_reference = {
       offer     = "UbuntuServer"
       publisher = "Canonical"
@@ -137,9 +145,9 @@ module "vm2" {
 
 module "maintenance" {
   source  = "cloudnationhq/mcf/azure"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
-  config = {
+  maintenance = {
     name                     = module.naming.maintenance_configuration.name
     resource_group_name      = module.rg.groups.demo.name
     location                 = module.rg.groups.demo.location
@@ -155,6 +163,7 @@ module "maintenance" {
     }
 
     install_patches = {
+      reboot = "Always"
       linux = {
         classifications_to_include    = ["Critical", "Security"]
         package_names_mask_to_exclude = ["dontpatch*"]
@@ -170,10 +179,10 @@ module "maintenance" {
 
     vm_assignments = {
       vm1 = {
-        virtual_machine_id = module.vm1.instance.id
+        virtual_machine_id = module.vm1.virtual_machine.id
       }
       vm2 = {
-        virtual_machine_id = module.vm2.instance.id
+        virtual_machine_id = module.vm2.virtual_machine.id
       }
     }
   }

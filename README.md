@@ -17,27 +17,27 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 5.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 5.0)
 
 ## Resources
 
 The following resources are used by this module:
 
-- [azurerm_maintenance_assignment_dynamic_scope.mcf_ds](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_assignment_dynamic_scope) (resource)
-- [azurerm_maintenance_assignment_virtual_machine.mcf_vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_assignment_virtual_machine) (resource)
-- [azurerm_maintenance_configuration.mcf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_configuration) (resource)
+- [azurerm_maintenance_assignment_dynamic_scope.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_assignment_dynamic_scope) (resource)
+- [azurerm_maintenance_assignment_virtual_machine.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_assignment_virtual_machine) (resource)
+- [azurerm_maintenance_configuration.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/maintenance_configuration) (resource)
 
 ## Required Inputs
 
 The following input variables are required:
 
-### <a name="input_config"></a> [config](#input\_config)
+### <a name="input_maintenance"></a> [maintenance](#input\_maintenance)
 
 Description: Contains all maintenance configuration
 
@@ -46,31 +46,31 @@ Type:
 ```hcl
 object({
     name                     = string
-    scope                    = optional(string, "All")
+    scope                    = string
     resource_group_name      = optional(string)
     location                 = optional(string)
     in_guest_user_patch_mode = optional(string)
-    visibility               = optional(string, "Custom")
-    properties               = optional(map(string), {})
+    visibility               = optional(string)
+    properties               = optional(map(string))
     tags                     = optional(map(string))
     window = optional(object({
       start_date_time      = string
       expiration_date_time = optional(string)
       duration             = string
-      time_zone            = optional(string, "UTC")
+      time_zone            = string
       recur_every          = string
     }))
     install_patches = optional(object({
-      reboot = optional(string, "Always")
+      reboot = optional(string)
       linux = optional(object({
-        classifications_to_include    = optional(list(string), ["Critical", "Security"])
-        package_names_mask_to_exclude = optional(list(string), [])
-        package_names_mask_to_include = optional(list(string), [])
+        classifications_to_include    = optional(list(string))
+        package_names_mask_to_exclude = optional(list(string))
+        package_names_mask_to_include = optional(list(string))
       }))
       windows = optional(object({
-        classifications_to_include = optional(list(string), ["Critical", "Security"])
-        kb_numbers_to_exclude      = optional(list(string), [])
-        kb_numbers_to_include      = optional(list(string), [])
+        classifications_to_include = optional(list(string))
+        kb_numbers_to_exclude      = optional(list(string))
+        kb_numbers_to_include      = optional(list(string))
       }))
     }))
     vm_assignments = optional(map(object({
@@ -79,10 +79,10 @@ object({
     dynamic_scope_assignments = optional(map(object({
       name = string
       filter = object({
-        locations       = optional(list(string), [])
-        os_types        = optional(list(string), [])
-        resource_groups = optional(list(string), [])
-        resource_types  = optional(list(string), [])
+        locations       = optional(list(string))
+        os_types        = optional(list(string))
+        resource_groups = optional(list(string))
+        resource_types  = optional(list(string))
         tag_filter      = optional(string)
         tags = optional(list(object({
           tag    = string
@@ -125,13 +125,13 @@ Default: `{}`
 
 The following outputs are exported:
 
-### <a name="output_config"></a> [config](#output\_config)
-
-Description: Contains all maintenance configuration
-
 ### <a name="output_dynamic_scope_assignments"></a> [dynamic\_scope\_assignments](#output\_dynamic\_scope\_assignments)
 
 Description: Contains all dynamic scope assignments
+
+### <a name="output_maintenance"></a> [maintenance](#output\_maintenance)
+
+Description: Contains all maintenance configuration
 
 ### <a name="output_vm_assignments"></a> [vm\_assignments](#output\_vm\_assignments)
 
