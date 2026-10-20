@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v2.0.0...v2.1.0) (2026-10-20)
+
+
+### Features
+
+* **deps:** bump github.com/klauspost/compress in /tests ([#26](https://github.com/CloudNationHQ/terraform-azure-mcf/issues/26)) ([0a3fadc](https://github.com/CloudNationHQ/terraform-azure-mcf/commit/0a3fadc5834e743f843907c6a9ad92a0c139de1e))
+
 ## [2.0.0](https://github.com/CloudNationHQ/terraform-azure-mcf/compare/v1.2.0...v2.0.0) (2026-09-08)
 
 
